@@ -1,0 +1,51 @@
+{
+    "name": "Java Oracle Training",
+    "dockerComposeFile": [
+        "../compose.yml"
+    ],
+    "service": "java",
+    "workspaceFolder": "/app",
+    "shutdownAction": "stopCompose",
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // Java
+                "vscjava.vscode-java-pack",
+                // Maven
+                "vscjava.vscode-maven",
+                // XML(pom.xml)
+                "redhat.vscode-xml",
+                "redhat.java",
+                // Docker
+                "ms-azuretools.vscode-docker",
+                // Git
+                "eamodio.gitlens",
+                // Editor
+                "EditorConfig.EditorConfig",
+                // Better TOML
+                "tamasfe.even-better-toml"
+            ],
+
+            "settings": {
+                // Java
+                "java.compile.nullAnalysis.mode": "automatic",
+                // 保存時フォーマット
+                "editor.formatOnSave": true,
+                // タブ
+                "editor.tabSize": 4,
+                // 改行
+                "files.eol": "\n",
+                // 自動保存はOFF
+                "files.autoSave": "off",
+                // Maven
+                "maven.executable.path": "/usr/bin/mvn",
+                // Git
+                "git.autofetch": true,
+                // Explorer
+                "explorer.confirmDelete": false
+            }
+        }
+    }
+}
+
