@@ -10,6 +10,8 @@ services:
       NLS_DATE_FORMAT: YYYY-MM-DD          # 日付フォーマット
       NLS_TIMESTAMP_FORMAT: YYYY-MM-DD HH24:MI:SS  # タイムスタンプフォーマット
       TZ: Asia/Tokyo                       # タイムゾーン：JST
+      LANG: ja_JP.UTF-8
+      NLS_LANG: JAPANESE_JAPAN.AL32UTF8
 
     ports:
       - "1521:1521"
