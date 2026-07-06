@@ -12,14 +12,9 @@ public class Main {
         String user = "system";
         String password = "Oracle123";
 
-        try {
-            Connection con = DriverManager.getConnection(url, user, password);
-
+        try (Connection con = DriverManager.getConnection(url, user, password)) {
             System.out.println("接続成功！");
             System.out.println(con);
-
-            con.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

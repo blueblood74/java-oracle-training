@@ -1,17 +1,22 @@
 services:
-
   oracle:
     image: container-registry.oracle.com/database/free:latest
     container_name: oracle-free
-
     environment:
       ORACLE_PWD: ${ORACLE_PASSWORD}
+      ORACLE_CHARACTERSET: AL32UTF8 
+      NLS_LANGUAGE: JAPANESE               # 言語：日本語
+      NLS_TERRITORY: JAPAN                 # 地域：日本
+      NLS_DATE_FORMAT: YYYY-MM-DD          # 日付フォーマット
+      NLS_TIMESTAMP_FORMAT: YYYY-MM-DD HH24:MI:SS  # タイムスタンプフォーマット
+      TZ: Asia/Tokyo                       # タイムゾーン：JST
 
     ports:
       - "1521:1521"
 
     volumes:
       - oracle-data:/opt/oracle/oradata
+      - ./oracle/initdb:/opt/oracle/scripts/startup
 
     healthcheck:
       test: ["CMD", "healthcheck.sh"]
@@ -22,16 +27,11 @@ services:
   java:
     build:
       context: ./java
-
     container_name: java-training
-
     tty: true
-
     working_dir: /app
-
     volumes:
       - ./java:/app
-
     depends_on:
       oracle:
         condition: service_started
