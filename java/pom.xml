@@ -46,6 +46,12 @@
                 <version>3.6.3</version>
                 <configuration>
                     <mainClass>jp.co.training.Main</mainClass>
+                    <systemProperties>
+                        <systemProperty>
+                            <key>user.timezone</key>
+                            <value>Asia/Tokyo</value>
+                        </systemProperty>
+                    </systemProperties>
                 </configuration>
             </plugin>
         </plugins>

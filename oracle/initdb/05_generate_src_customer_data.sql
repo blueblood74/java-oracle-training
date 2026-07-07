@@ -2,22 +2,22 @@ ALTER SESSION SET CONTAINER = FREEPDB1;
 ALTER SESSION SET CURRENT_SCHEMA = SYSTEM;
 ALTER SESSION SET NLS_LENGTH_SEMANTICS = CHAR;
 
--- ============================================================
--- Part1: SRC_CUSTOMER 3,215件生成
--- CUSTOMER_TYPE_IDのバリエーション：
---   1,2,3 → MST_CUSTOMER_TYPE_CONVERSIONで変換可能
---   99,100 → 変換不能（異常データ）
--- ============================================================
 DECLARE
     v_customer_id   NUMBER;
     v_name          VARCHAR2(100 CHAR);
     v_address       VARCHAR2(200 CHAR);
-    v_type_id       NUMBER;
+    v_type_id       VARCHAR2(3 CHAR);
     v_del           NUMBER(1);
 
-    -- 変換可能:3,000件、変換不能:215件
     C_TOTAL         CONSTANT NUMBER := 3215;
-    C_INVALID_START CONSTANT NUMBER := 3001; -- 3001件目以降を異常データ
+    C_INVALID_START CONSTANT NUMBER := 3001;
+
+    -- 変換可能なSOURCE_TYPE（9種類）
+    TYPE t_types IS TABLE OF VARCHAR2(3 CHAR);
+    v_types_ok t_types := t_types('001','010','100','002','020','200','003','030','300');
+
+    -- 変換不能なSOURCE_TYPE
+    v_types_ng t_types := t_types('999','998','997');
 
     TYPE t_names IS TABLE OF VARCHAR2(30 CHAR);
     v_names t_names := t_names(
@@ -43,12 +43,12 @@ BEGIN
         v_address     := v_cities(MOD(i - 1, v_cities.COUNT) + 1);
         v_del         := CASE WHEN MOD(i, 20) = 0 THEN 1 ELSE 0 END;
 
-        -- 変換不能データを215件混入
         IF i >= C_INVALID_START THEN
-            -- 99, 100 を交互にセット（MST_CUSTOMER_TYPE_CONVERSIONに存在しない値）
-            v_type_id := CASE WHEN MOD(i, 2) = 0 THEN 99 ELSE 100 END;
+            -- 変換不能データ（215件）
+            v_type_id := v_types_ng(MOD(i - C_INVALID_START, v_types_ng.COUNT) + 1);
         ELSE
-            v_type_id := MOD(i - 1, 3) + 1; -- 1, 2, 3 を循環
+            -- 正常データ：9種類を循環
+            v_type_id := v_types_ok(MOD(i - 1, v_types_ok.COUNT) + 1);
         END IF;
 
         INSERT INTO SRC_CUSTOMER (
