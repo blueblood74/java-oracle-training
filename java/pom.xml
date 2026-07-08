@@ -12,6 +12,8 @@
     <version>1.0.0</version>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
@@ -39,6 +41,7 @@
     </dependencies>
 
     <build>
+        <outputDirectory>${project.basedir}/target/classes</outputDirectory>
         <plugins>
                 <plugin>
                 <groupId>org.codehaus.mojo</groupId>
